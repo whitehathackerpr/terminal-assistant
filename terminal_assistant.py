@@ -10,7 +10,6 @@ import re
 import datetime
 import shlex
 import distro
-import pkg_resources
 from typing import Optional, Dict, Any, List, Tuple
 
 # Version information
@@ -22,6 +21,14 @@ MISSING_DEPENDENCIES = False
 try:
     import google.generativeai as genai
     import distro
+    
+    # Try to import pkg_resources, but don't fail if it's not available
+    try:
+        import pkg_resources
+        HAVE_PKG_RESOURCES = True
+    except ImportError:
+        HAVE_PKG_RESOURCES = False
+        
 except ImportError:
     MISSING_DEPENDENCIES = True
 
@@ -86,16 +93,17 @@ def check_dependencies() -> bool:
         return False
     
     # Check if google-generativeai version is compatible
-    try:
-        genai_version = pkg_resources.get_distribution("google-generativeai").version
-        if pkg_resources.parse_version(genai_version) < pkg_resources.parse_version(MIN_REQUIRED_GENAI_VERSION):
-            print(f"Warning: Your google-generativeai version ({genai_version}) is older than the recommended minimum ({MIN_REQUIRED_GENAI_VERSION}).")
-            print("Some features might not work correctly.")
-            print("To update, run: ./update_dependencies.sh")
-            print("Or manually: pip install -U google-generativeai")
-    except Exception:
-        # Skip version check if there's an error
-        pass
+    if HAVE_PKG_RESOURCES:
+        try:
+            genai_version = pkg_resources.get_distribution("google-generativeai").version
+            if pkg_resources.parse_version(genai_version) < pkg_resources.parse_version(MIN_REQUIRED_GENAI_VERSION):
+                print(f"Warning: Your google-generativeai version ({genai_version}) is older than the recommended minimum ({MIN_REQUIRED_GENAI_VERSION}).")
+                print("Some features might not work correctly.")
+                print("To update, run: ./update_dependencies.sh")
+                print("Or manually: pip install -U google-generativeai")
+        except Exception:
+            # Skip version check if there's an error
+            pass
         
     return True
 

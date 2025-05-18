@@ -47,6 +47,13 @@ print_success "Virtual environment activated"
 
 print_header "Updating Dependencies"
 
+# First ensure setuptools is installed (provides pkg_resources)
+pip install -U setuptools wheel || {
+    print_error "Failed to install setuptools."
+    exit 1
+}
+print_success "Installed setuptools"
+
 # Create a temporary file with just package names
 TEMP_REQUIREMENTS=$(mktemp)
 echo "google-generativeai" > "$TEMP_REQUIREMENTS"

@@ -215,6 +215,12 @@ source "$INSTALL_DIR/venv/bin/activate" || {
 
 echo -e "Installing required packages..."
 
+# First ensure setuptools is installed (provides pkg_resources)
+"$INSTALL_DIR/venv/bin/pip" install -U setuptools wheel || {
+    print_error "Failed to install setuptools."
+    exit 1
+}
+
 # Auto-update requirements.txt file with latest package versions
 if [ -f requirements.txt ]; then
     echo -e "Upgrading packages from requirements.txt with latest versions..."
