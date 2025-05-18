@@ -10,11 +10,15 @@ import re
 import datetime
 import shlex
 import distro
+import warnings
 from typing import Optional, Dict, Any, List, Tuple
 
 # Version information
 VERSION = "1.1.0"
 MIN_REQUIRED_GENAI_VERSION = "0.8.5"
+
+# Suppress deprecation warnings from pkg_resources
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="pkg_resources")
 
 # Gracefully handle missing dependencies
 MISSING_DEPENDENCIES = False
@@ -346,7 +350,7 @@ Make sure your answer is specifically tailored to this system: {self.system_info
             return "Error: Gemini API not initialized. Please check your API key."
         
         try:
-            model_name = self.config.get('model', 'gemini-2.5-pro-preview-05-06')
+            model_name = self.config.get('model', 'gemini-pro')
             model = genai.GenerativeModel(model_name)
             response = model.generate_content(prompt)
             return response.text
@@ -680,7 +684,7 @@ Make sure your answer is specifically tailored to this system: {self.system_info
                 'safety_level': self.safety_level,
                 'auto_confirm_safe': self.auto_confirm_safe,
                 'scripts_dir': self.scripts_dir,
-                'model': self.config.get('model', 'gemini-2.5-pro-preview-05-06')
+                'model': self.config.get('model', 'gemini-pro')
             }
             return json.dumps(info, indent=2)
             

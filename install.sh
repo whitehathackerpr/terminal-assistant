@@ -303,7 +303,7 @@ if [ -n "$API_KEY" ]; then
     cat > "$CONFIG_PATH" <<EOL
 {
   "api_key": "$API_KEY",
-  "model": "gemini-2.5-pro-preview-05-06",
+  "model": "gemini-1.5-pro",
   "scripts_dir": "$SCRIPTS_DIR",
   "auto_confirm_safe": false,
   "safety_level": "high"
@@ -313,7 +313,7 @@ EOL
 else
     cat > "$CONFIG_PATH" <<EOL
 {
-  "model": "gemini-2.5-pro-preview-05-06",
+  "model": "gemini-1.5-pro",
   "scripts_dir": "$SCRIPTS_DIR",
   "auto_confirm_safe": false,
   "safety_level": "high"
