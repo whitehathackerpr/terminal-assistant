@@ -1,0 +1,11 @@
+{
+  "api_key": "your-gemini-api-key-here",
+  "model": "gemini-2.5-pro-preview-05-06",
+  "history_size": 10,
+  "colors": {
+    "enabled": true,
+    "prompt": "green",
+    "response": "cyan",
+    "error": "red"
+  }
+} 
